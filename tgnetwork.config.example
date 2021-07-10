@@ -1,0 +1,4 @@
+[telegram]
+session = <session name>
+api_id = <api id>
+api_hash = <api hash>
