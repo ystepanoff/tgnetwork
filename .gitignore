@@ -1,5 +1,5 @@
 __pycache__/
 *.py[cod]
 tgnetwork-venv
-.session
+*.session
 tgnetwork.config
