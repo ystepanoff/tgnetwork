@@ -10,6 +10,7 @@ session = config['telegram']['session']
 api_id = config['telegram']['api_id']
 api_hash = config['telegram']['api_hash']
 
+
 channels_meta = {
     'marinelepen': {
         'name': 'Marine Le Pen',
@@ -22,6 +23,25 @@ channels = ['marinelepen']
 max_depth = 10
 out_csv = 'marielepen.csv'
 
+
+def write_csv():
+    global channels
+    global channels_meta
+    global out_csv
+    with open(out_csv, 'wt') as file:
+        cw = csv.writer(file)
+        cw.writerow(['handle', 'name', 'depth', 'parent', 'total'])
+        for ch in channels:
+            row = [
+                ch,
+                channels_meta[ch]['name'],
+                channels_meta[ch]['depth'],
+                channels_meta[ch]['parent'],
+                channels_meta[ch]['total']
+            ]
+            cw.writerow(row)
+
+            
 if __name__ == '__main__':
     with TelegramClient(session, api_id, api_hash) as client:
         for ch in channels:
@@ -46,21 +66,10 @@ if __name__ == '__main__':
                                     }
                                     print(channels_meta)
                                     print('----------------------')
+                                    write_csv()
                                 else:
                                     channels_meta[channel.username]['total'] += 1
                         except AttributeError:
                             pass
                         except:
                             print('Error: ', forward.from_id)
-    with open(out_csv, 'wt') as file:
-        cw = csv.writer(file)
-        cw.writerow(['handle', 'title', 'depth', 'parent', 'total'])
-        for ch in channels:
-            row = [
-                ch,
-                channels_meta[ch]['title'],
-                channels_meta[ch]['depth'],
-                channels_meta[ch]['parent'],
-                channels_meta[ch]['total']
-            ]
-            cw.writerow(row)
